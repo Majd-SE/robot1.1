@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><link rel="icon" type="image/jpeg" href="robot-favicon.jpg"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#070707"><title>Dashboard | ROBOT.</title><link rel="stylesheet" href="style.css"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#070707"><title>Dashboard | ROBOT.</title><link rel="stylesheet" href="style.css"><link rel="icon" type="image/jpeg" href="robot-favicon.jpg"></head>
 <body><div id="robotMenu"></div><main class="page-shell"><header class="page-header"><div><p class="eyebrow">FOCUS SYSTEM</p><h1>Dashboard</h1><p class="page-description">Your robot control center.</p></div><div class="connection-pill is-offline" id="dashboardConnection" title="Set the ESP32 address on the Status page"><i class="connection-dot"></i><span>Connect in Status</span></div></header>
 <section class="dashboard-grid"><article class="glass-card quick-card"><div class="section-heading"><div><p class="eyebrow">CONTROL</p><h2>Quick Controls</h2><p class="muted">Choose an expression for your robot.</p></div></div><div class="emotion-grid" role="group" aria-label="Robot expressions">
 <button class="emotion-button is-selected" data-name="Normal" data-expression="0" type="button"><svg class="expression-icon" viewBox="0 0 48 48" aria-hidden="true"><path class="face-outline" d="M15 7.5h18a7.5 7.5 0 0 1 7.5 7.5v18a7.5 7.5 0 0 1-7.5 7.5H15A7.5 7.5 0 0 1 7.5 33V15A7.5 7.5 0 0 1 15 7.5Z"/><rect x="13" y="16" width="9" height="12" rx="4.5"/><rect x="26" y="16" width="9" height="12" rx="4.5"/><circle cx="17.5" cy="22" r="2.5"/><circle cx="30.5" cy="22" r="2.5"/><path d="M20 32h8"/></svg><span>Normal</span></button>
@@ -86,3 +86,4 @@ loadRobotMenu().then(async () => {
   catch(error) { const connection=document.getElementById('dashboardConnection'); connection.querySelector('span').textContent='Robot Offline'; connection.title=error.message; connection.classList.add('is-offline'); }
 }).catch(() => {});
 </script></body></html>
+
