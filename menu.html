@@ -21,7 +21,7 @@
   let latestRobotStatus = null;
   let latestStatusAt = 0;
   let statusWaiters = [];
-  const STATUS_FRESH_MS = 45000;
+  const STATUS_FRESH_MS = 90000;
 
   function loadMqttLibrary() {
     if (window.mqtt) return Promise.resolve();
@@ -58,7 +58,7 @@
           clientId: `robot-web-${Math.random().toString(16).slice(2)}`,
           clean: true,
           connectTimeout: 12000,
-          reconnectPeriod: 2000,
+          reconnectPeriod: 15000,
           keepalive: 30
         });
         let settled = false;
@@ -77,6 +77,7 @@
                 settled = true;
                 clearTimeout(timeout);
                 mqttClientPromise = null;
+                client.end(true);
                 reject(new Error(`Could not subscribe to robot status: ${error.message}`));
               }
               return;
@@ -116,6 +117,7 @@
             settled = true;
             clearTimeout(timeout);
             mqttClientPromise = null;
+            client.end(true);
             reject(new Error(`Cloud connection failed: ${error.message}`));
           }
         });
