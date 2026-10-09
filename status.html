@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#070707">
   <title>Status | ROBOT.</title>
   <link rel="stylesheet" href="style.css">
-</head>
+<link rel="icon" type="image/jpeg" href="robot-favicon.jpg"></head>
 <body>
 <div id="robotMenu"></div>
 <main class="page-shell">
@@ -60,7 +60,7 @@ usernameInput.value = localStorage.getItem('aioUsername') || '';
 keyInput.value = localStorage.getItem('aioKey') || '';
 
 async function getRobotStatus() { return window.robotControl.request('/api/status'); }
-const modeNames = ['Pet', 'Study', 'Work', 'Pomodoro', 'Clock', 'Weather', 'Message', 'Status', 'Night', 'Reminders', 'To-do'];
+const modeNames = ['Pet', 'Study', 'Work', 'Pomodoro', 'Clock', 'Weather', 'Message', 'Status', 'Night', 'Reminders', 'To-do', 'Gaming'];
 const expressionNames = ['Normal', 'Happy', 'Love', 'Sad', 'Angry', 'Surprised', 'Sleepy'];
 function formatTimer(value) {
   const seconds = Math.max(0, Math.floor(Number(value) || 0));
@@ -149,3 +149,4 @@ async function loadRobotMenu() {
 </script>
 </body>
 </html>
+
