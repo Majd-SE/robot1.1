@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#070707">
   <title>Reminders | ROBOT.</title>
   <link rel="stylesheet" href="style.css">
-</head>
+<link rel="icon" type="image/jpeg" href="robot-favicon.jpg"></head>
 <body>
 <div id="robotMenu"></div>
 <main class="page-shell">
@@ -52,7 +52,7 @@ async function syncReminder(payload) {
   }
   try {
     await window.robotControl.request('/api/reminder', payload);
-    feedback.textContent = 'Reminder synced to the ESP32. It is shown on the OLED Reminders screen.';
+    feedback.textContent = 'The robot confirmed the reminder and switched to its Reminders screen.';
     feedback.classList.remove('error-text');
   } catch (error) {
     feedback.textContent = `Saved on this phone, but robot sync failed: ${error.message}`;
@@ -156,3 +156,4 @@ async function loadRobotMenu() {
 </script>
 </body>
 </html>
+
