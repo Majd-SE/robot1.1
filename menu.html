@@ -208,7 +208,7 @@
       return { action: payload.action };
     }
     if (path === '/api/mode') {
-      if (!['pet', 'study', 'work', 'pomodoro', 'clock', 'weather', 'message', 'status', 'reminders', 'todo'].includes(payload.mode))
+      if (!['pet', 'study', 'work', 'pomodoro', 'clock', 'weather', 'message', 'status', 'reminders', 'todo', 'gaming'].includes(payload.mode))
         throw new Error('Choose a valid robot mode.');
       return { action: 'mode', mode: payload.mode };
     }
