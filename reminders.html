@@ -48,15 +48,24 @@ function saveReminders() {
 async function syncReminder(payload) {
   if (!window.robotControl || !window.robotControl.isConfigured) {
     feedback.textContent = 'Saved on this phone. Connect the robot on the Status page to sync it to the OLED.';
-    return;
+    return false;
   }
   try {
     await window.robotControl.request('/api/reminder', payload);
+    if (payload.operation === 'add') {
+      const savedReminder = reminders.find(item => item.id === payload.id);
+      if (savedReminder) {
+        savedReminder.synced = true;
+        saveReminders();
+      }
+    }
     feedback.textContent = 'The robot confirmed the reminder and switched to its Reminders screen.';
     feedback.classList.remove('error-text');
+    return true;
   } catch (error) {
     feedback.textContent = `Saved on this phone, but robot sync failed: ${error.message}`;
     feedback.classList.add('error-text');
+    return false;
   }
 }
 
@@ -133,7 +142,19 @@ document.getElementById('reminderForm').addEventListener('submit', event => {
 });
 
 renderReminders();
-loadRobotMenu();
+loadRobotMenu().then(async () => {
+  if (!window.robotControl?.isConfigured) return;
+  for (const item of reminders.filter(reminder => !reminder.synced)) {
+    const added = await syncReminder({ operation: 'add', ...item });
+    if (added && item.complete) {
+      const completed = await syncReminder({ operation: 'complete', id: item.id });
+      if (!completed) {
+        item.synced = false;
+        saveReminders();
+      }
+    }
+  }
+});
 async function loadRobotMenu() {
   try {
     const response = await fetch('menu.html');
