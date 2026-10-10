@@ -61,7 +61,7 @@ keyInput.value = localStorage.getItem('aioKey') || '';
 
 async function getRobotStatus() { return window.robotControl.request('/api/status'); }
 const modeNames = ['Pet', 'Study', 'Work', 'Pomodoro', 'Clock', 'Weather', 'Message', 'Status', 'Night', 'Reminders', 'To-do', 'Gaming'];
-const expressionNames = ['Normal', 'Happy', 'Love', 'Sad', 'Angry', 'Surprised', 'Sleepy'];
+const expressionNames = ['Normal', 'Happy', 'Love', 'Sad', 'Angry', 'Surprised', 'Sleepy', 'Excited', 'Focused', 'Fed'];
 function formatTimer(value) {
   const seconds = Math.max(0, Math.floor(Number(value) || 0));
   return `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
