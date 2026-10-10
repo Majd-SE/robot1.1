@@ -43,6 +43,27 @@
     };
   }
 
+  function waitForReminderConfirmation(id, timeoutMs = 12000) {
+    return new Promise((resolve, reject) => {
+      const finish = (handler, value) => {
+        clearTimeout(timeout);
+        window.removeEventListener('robot-status', onStatus);
+        handler(value);
+      };
+      const onStatus = event => {
+        if (event.detail?.lastReminderId === id)
+          finish(resolve, event.detail);
+      };
+      const timeout = setTimeout(() => finish(
+        reject,
+        new Error('The cloud accepted the reminder, but the robot did not confirm it. Check that the ESP32 is online and has the latest firmware.')
+      ), timeoutMs);
+      window.addEventListener('robot-status', onStatus);
+      if (latestRobotStatus?.lastReminderId === id)
+        finish(resolve, latestRobotStatus);
+    });
+  }
+
   async function connectCloud() {
     const { username, key } = cloudSettings();
     if (!username || !key) throw new Error('Enter your Adafruit IO username and key on the Status page.');
@@ -157,7 +178,15 @@
         const client = await connectCloud();
         if (payload !== undefined) {
           const command = JSON.stringify({ value: JSON.stringify(toMqttCommand(path, payload)) });
+          const reminderConfirmation = path === '/api/reminder'
+            ? waitForReminderConfirmation(String(payload.id || ''))
+            : null;
+          if (reminderConfirmation) reminderConfirmation.catch(() => {});
           await new Promise((resolve, reject) => client.publish(`${username}/feeds/robot-command/json`, command, error => error ? reject(error) : resolve()));
+          if (reminderConfirmation) {
+            const robotStatus = await reminderConfirmation;
+            return { ok: true, queued: true, robotStatus };
+          }
           return { ok: true, queued: true };
         }
         if (path === '/api/status') {
