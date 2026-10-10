@@ -222,7 +222,7 @@
   function toMqttCommand(path, payload = {}) {
     if (path === '/api/emotion') {
       const expression = Number(payload.expression);
-      if (!Number.isInteger(expression) || expression < 0 || expression > 6)
+      if (!Number.isInteger(expression) || expression < 0 || expression > 9)
         throw new Error('Choose a valid robot expression.');
       return { action: 'emotion', expression };
     }
