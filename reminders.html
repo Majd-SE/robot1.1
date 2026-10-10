@@ -51,7 +51,7 @@ async function syncReminder(payload) {
     return false;
   }
   try {
-    await window.robotControl.request('/api/reminder', payload);
+    const result = await window.robotControl.request('/api/reminder', payload);
     if (payload.operation === 'add') {
       const savedReminder = reminders.find(item => item.id === payload.id);
       if (savedReminder) {
@@ -59,7 +59,10 @@ async function syncReminder(payload) {
         saveReminders();
       }
     }
-    feedback.textContent = 'The robot confirmed the reminder and switched to its Reminders screen.';
+    const count = result.robotStatus?.reminderCount;
+    feedback.textContent = Number.isFinite(Number(count))
+      ? `Robot confirmed it. It reports ${count} reminder(s) stored; the OLED will show the reminder title now.`
+      : 'Robot confirmed the reminder and is showing its title on the OLED.';
     feedback.classList.remove('error-text');
     return true;
   } catch (error) {
